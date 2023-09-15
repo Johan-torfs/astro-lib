@@ -1,0 +1,49 @@
+---
+interface Props {
+    gap?: number;
+    padding?: 0|8|16|24;
+    items?: "center"|"start"|"end"|"stretch"|"baseline"|"auto"|"default";
+    justify?: "center"|"start"|"end"|"between"|"around"|"evenly"|"auto"|"default";
+}
+
+const {  padding = 0, gap, items = "default", justify = "default" } = Astro.props;
+
+const possiblePadding = {
+    0: "py-0 px-0",
+    8: "py-8 px-8",
+    16: "py-16 px-16",
+    24: "py-24 px-24",
+};
+
+const possibleItems = {
+    "center": "items-center",
+    "start": "items-start",
+    "end": "items-end",
+    "stretch": "items-stretch",
+    "baseline": "items-baseline",
+    "auto": "items-auto",
+    "default": "",
+};
+
+const possibleJustify = {
+    "center": "justify-center",
+    "start": "justify-start",
+    "end": "justify-end",
+    "between": "justify-between",
+    "around": "justify-around",
+    "evenly": "justify-evenly",
+    "auto": "justify-auto",
+    "default": "",
+};
+
+const className = `
+    ${gap ? 'gap-' + gap : ''}
+    ${padding ? possiblePadding[padding] : ''}
+    ${possibleItems[items]}
+    ${possibleJustify[justify]}
+`.replace(/\s+/g, ' ').trim();
+---
+
+<div class:list={["flex", className]}>
+    <slot/>
+</div>

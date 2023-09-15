@@ -1,0 +1,70 @@
+---
+interface Props {
+    htmlTag?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+    color?: "primary"| "secondary" | "light-red" | "orangey-yellow" | "green-teal" | "cobalt-blue" | "default" | string;
+    size?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "default";
+    font?: "sans" | "montserrat" | "fraunces";
+    dark?: boolean;
+}
+
+const { htmlTag = 'h1', color = "default", dark = false, font = "sans", size = "default" } = Astro.props;
+
+const possibleColors = {
+    primary: dark ? "dark:text-primary-700 text-primary-400" : "text-primary-700 dark:text-primary-400",
+    secondary: dark ? "dark:text-secondary-700 text-secondary-400" : "text-secondary-700 dark:text-secondary-400",
+    "light-red": dark ? "dark:text-light-red-700 text-light-red-400" : "text-light-red-700 dark:text-light-red-400",
+    "orangey-yellow": dark ? "dark:text-orangey-yellow-700 text-orangey-yellow-400" : "text-orangey-yellow-700 dark:text-orangey-yellow-400",
+    "green-teal": dark ? "dark:text-green-teal-700 text-green-teal-400" : "text-green-teal-700 dark:text-green-teal-400",
+    "cobalt-blue": dark ? "dark:text-cobalt-blue-700 text-cobalt-blue-400" : "text-cobalt-blue-700 dark:text-cobalt-blue-400",
+    default: dark ? "text-white text-black" : "dark:text-white text-black",
+}
+
+const possibleSize = {
+    sm: "text-sm",
+    md: "text-md",
+    lg: "text-lg",
+    xl: "text-xl",
+    "2xl": "text-2xl",
+    "3xl": "text-3xl",
+    "4xl": "text-4xl",
+}
+
+const possibleFonts = {
+    sans: "font-sans",
+    montserrat: "font-montserrat",
+    fraunces: "font-fraunces",
+}
+
+const className = `
+    ${possibleColors.hasOwnProperty(color) 
+        //@ts-ignore
+        ? possibleColors[color] 
+        : color
+    }
+    ${possibleFonts[font]}
+`.replace(/\s+/g, ' ').trim();
+---
+
+{htmlTag == 'h1' ? (
+    <h1 class:list={[size != "default" ? possibleSize[size] : 'text-4xl sm:text-5xl lg:text-6xl', "font-medium tracking-tight mb-12 sm:mb-16", className]}><slot/></h1>
+) : null}
+
+{htmlTag == 'h2' ? (
+    <h2 class:list={[size != "default" ? possibleSize[size] : 'text-3xl sm:text-4xl', "font-medium tracking-tight mb-12 sm:mb-16", className]}><slot/></h2>
+) : null}
+
+{htmlTag == 'h3' ? (
+    <h3 class:list={[size != "default" ? possibleSize[size] : 'text-xl', "font-bold", className]}><slot/></h3>
+) : null}
+
+{htmlTag == 'h4' ? (
+    <h4 class:list={[size != "default" ? possibleSize[size] : '', className]}><slot/></h4>
+) : null}
+
+{htmlTag == 'h5' ? (
+    <h5 class:list={[size != "default" ? possibleSize[size] : '', className]}><slot/></h5>
+) : null}
+
+{htmlTag == 'h6' ? (
+    <h6 class:list={[size != "default" ? possibleSize[size] : '', className]}><slot/></h6>
+) : null}

@@ -1,0 +1,50 @@
+---
+interface Props {
+    padding?: 0|8|16|24;
+    color?: "primary"| "secondary" | "default";
+    gradient?: boolean;
+    center?: boolean;
+    shadow?: boolean;
+    rounded?: {
+        top?: boolean;
+        bottom?: boolean;
+    }
+    class?: string;
+}
+
+const { padding = 8, shadow = false, color = "default", gradient = false, center = false, rounded = {top: true, bottom: true}, class: classProp } = Astro.props;
+
+const possiblePadding = {
+    0: "py-0 px-0",
+    8: "py-8 px-8",
+    16: "py-16 px-16",
+    24: "py-24 px-24",
+};
+
+const possibleColors = {
+    primary: "bg-primary-700 dark:bg-primary-400",
+    secondary: "bg-secondary-700 dark:bg-secondary-400",
+    default: "bg-white dark:bg-black"
+}
+
+const possibleGradients = {
+    primary: "bg-gradient-to-b from-primary-500 to-primary-700 dark:from-primary-600 dark:to-primary-400",
+    secondary: "bg-gradient-to-b from-secondary-500 to-secondary-700 dark:from-secondary-600 dark:to-secondary-400",
+    default: "bg-white dark:bg-black"
+}
+
+const className = `
+    ${classProp ? classProp : ''}
+    ${shadow ? "shadow-lg" : ''}
+    ${padding ? possiblePadding[padding] : ''}
+    ${possibleColors[color]} ${gradient ? possibleGradients[color] : ""}
+`.replace(/\s+/g, ' ').trim();
+
+const classNameInner = `${center ? "items-center" : ""}`;
+---
+
+<div class:list={["overflow-hidden", rounded.top ? "rounded-t-3xl" : "", rounded.bottom ? "rounded-b-3xl" : "", className]}>
+    <div class:list={["flex flex-col gap-4", classNameInner]}>
+        <slot/>
+    </div>
+</div>

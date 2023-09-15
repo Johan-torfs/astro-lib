@@ -1,0 +1,65 @@
+---
+interface Props {
+    cols?: {
+        gap?: number,
+        default?: number,
+        sm?: number,
+        md?: number,
+        lg?: number,
+        xl?: number,
+        xxl?: number,
+    }
+    padding?: 0|8|16|24;
+    content?: "center"|"start"|"end"|"between"|"around"|"evenly"|"auto"|"default";
+    justify?: "center"|"start"|"end"|"between"|"around"|"evenly"|"auto"|"default";
+}
+
+const { cols = {}, padding = 0, content = "default", justify = "default" } = Astro.props;
+
+const possiblePadding = {
+    0: "py-0 px-0",
+    8: "py-8 px-8",
+    16: "py-16 px-16",
+    24: "py-24 px-24",
+};
+
+const possibleJustify = {
+    "center": "justify-center",
+    "start": "justify-start",
+    "end": "justify-end",
+    "between": "justify-between",
+    "around": "justify-around",
+    "evenly": "justify-evenly",
+    "auto": "justify-auto",
+    "default": "",
+};
+
+const possibleContent = {
+    "center": "content-center",
+    "start": "content-start",
+    "end": "content-end",
+    "between": "content-between",
+    "around": "content-around",
+    "evenly": "content-evenly",
+    "auto": "content-auto",
+    "default": "",
+};
+
+const className = `
+    ${cols.gap ? 'gap-' + cols.gap : ''}
+    ${cols.default ? 'grid-cols-' + cols.default : ''} 
+    ${cols.sm ? 'sm:grid-cols-' + cols.sm : ''}
+    ${cols.md ? 'md:grid-cols-' + cols.md : ''}
+    ${cols.lg ? 'lg:grid-cols-' + cols.lg : ''}
+    ${cols.xl ? 'xl:grid-cols-' + cols.xl : ''}
+    ${cols.xxl ? 'xxl:grid-cols-' + cols.xxl : ''}
+
+    ${padding ? possiblePadding[padding] : ''}
+    ${possibleJustify[justify]}
+    ${possibleContent[content]}
+`.replace(/\s+/g, ' ').trim();
+---
+
+<div class:list={["grid", className]}>
+    <slot/>
+</div>
